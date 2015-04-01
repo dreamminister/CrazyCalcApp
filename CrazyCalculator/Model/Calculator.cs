@@ -18,23 +18,9 @@ namespace CrazyCalculator.Model
 
     public class Calculator : INotifyPropertyChanged
     {
-        public int FirstOperand;
-        public int SecondOperand;
+        public long FirstOperand;
+        public long SecondOperand;
         public Operation Operation;
-
-        public static string OperationToString(Operation op)
-        {
-            if (op == Operation.Mult)
-                return "*";
-            else if (op == Operation.Sub)
-                return "-";
-            else if (op == Operation.Add)
-                return "+";
-            else if (op == Operation.Div)
-                return "/";
-            else
-                return "";
-        }
 
         public event PropertyChangedEventHandler PropertyChanged;
 
@@ -45,11 +31,21 @@ namespace CrazyCalculator.Model
             set
             {
                 _result = value;
+
                 OnPropertyChanged("Result");
+
                 
-                if (Result.Length > 5)
-                    Error = "Too many digits...";
-                OnPropertyChanged("Error");
+                if (Operation != Operation.None)
+                {
+                    Error = Operation.ToString();
+                    OnPropertyChanged("Error");
+                }
+                else if (Result == "")
+                {
+                    Error = "";
+                    OnPropertyChanged("Error");
+                }
+
             }
             get
             {
